@@ -19,7 +19,7 @@ var SubresourceIntegrityPlugin = require('webpack-subresource-integrity');
 var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
-var BuildProgressPlugin = require('react-dev-utils/BuildProgressPlugin');
+var BuildProgressPlugin = require('timer-react-dev-utils/BuildProgressPlugin');
 
 // @remove-on-eject-begin
 // `path` is not used after eject - see https://github.com/facebookincubator/create-react-app/issues/1174
