@@ -12,6 +12,7 @@
   },
   "files": [
     "ansiHTML.js",
+    "BuildProgressPlugin.js",
     "checkRequiredFiles.js",
     "clearConsole.js",
     "failFast.css",
