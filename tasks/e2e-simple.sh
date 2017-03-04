@@ -179,7 +179,7 @@ function verify_env_url {
   grep -F -R --exclude=*.map "\"./static/" build/ -q; test $? -eq 0 || exit 1
   grep -F -R --exclude=*.map "\"/static/" build/ -q; test $? -eq 1 || exit 1
 
-  PUBLIC_URL="/anabsolute" npm run build
+  PUBLIC_URL='/anabsolute' npm run build
   grep -F -R --exclude=*.map "/anabsolute/static/" build/ -q; test $? -eq 0 || exit 1
   grep -F -R --exclude=*.map "\"/static/" build/ -q; test $? -eq 1 || exit 1
 
@@ -190,7 +190,7 @@ function verify_env_url {
   grep -F -R --exclude=*.map "/testingpath/static/" build/ -q; test $? -eq 0 || exit 1
   grep -F -R --exclude=*.map "\"/static/" build/ -q; test $? -eq 1 || exit 1
 
-  PUBLIC_URL="https://www.example.net/overridetest" npm run build
+  PUBLIC_URL='https://www.example.net/overridetest' npm run build
   grep -F -R --exclude=*.map "https://www.example.net/overridetest/static/" build/ -q; test $? -eq 0 || exit 1
   grep -F -R --exclude=*.map "\"/static/" build/ -q; test $? -eq 1 || exit 1
   grep -F -R --exclude=*.map "testingpath/static" build/ -q; test $? -eq 1 || exit 1
@@ -202,7 +202,7 @@ function verify_env_url {
   grep -F -R --exclude=*.map "/testingpath/static/" build/ -q; test $? -eq 0 || exit 1
   grep -F -R --exclude=*.map "\"/static/" build/ -q; test $? -eq 1 || exit 1
 
-  PUBLIC_URL="https://www.example.net/overridetest" npm run build
+  PUBLIC_URL='https://www.example.net/overridetest' npm run build
   grep -F -R --exclude=*.map "https://www.example.net/overridetest/static/" build/ -q; test $? -eq 0 || exit 1
   grep -F -R --exclude=*.map "\"/static/" build/ -q; test $? -eq 1 || exit 1
   grep -F -R --exclude=*.map "testingpath/static" build/ -q; test $? -eq 1 || exit 1
