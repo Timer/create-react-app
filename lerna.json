@@ -14,6 +14,9 @@
     "cacheDir": ".changelog"
   },
   "packages": [
-    "packages/*"
+    "packages/babel-preset-react-app",
+    "packages/eslint-config-react-app",
+    "packages/react-dev-utils",
+    "packages/react-scripts"
   ]
 }
