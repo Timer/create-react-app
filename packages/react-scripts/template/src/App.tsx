@@ -8,7 +8,7 @@ function a() {
 class App extends React.Component<{}, null> {
   async componentDidMount() {
     await Promise.resolve();
-    //document.body();
+    (document as any).body();
   }
 
   render() {

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "emitBOM": false,
+    "jsx": "preserve",
+    "allowJs": true,
+    "module": "es2015",
+    "newLine": "LF",
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "sourceMap": true,
+    "target": "esnext",
+    "experimentalDecorators": false,
+    "moduleResolution": "node",
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "sourceRoot": "/"
+  }
+}
