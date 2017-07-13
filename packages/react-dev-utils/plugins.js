@@ -123,6 +123,7 @@ function pushExclusiveLoader({ config, ast }, testStr, loader) {
         if (afterIndex === -1) {
           throw new Error('Unable to match pre-loader.');
         }
+        console.log('holy shit it works');
         path.node.elements.splice(afterIndex + 1, 0, loader);
       },
     });
