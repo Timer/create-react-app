@@ -66,7 +66,8 @@ function cacheExpensiveLoaders(name, loaders, { threaded = true } = {}) {
           paths.appNodeModules,
           '.cache',
           require(paths.appPackageJson).name,
-          name
+          name,
+          process.env.NODE_ENV
         ),
       },
     },
