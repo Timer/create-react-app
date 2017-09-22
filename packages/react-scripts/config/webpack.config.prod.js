@@ -22,6 +22,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const { cpus } = require('os');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -55,6 +56,32 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
     { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
+
+function cacheExpensiveLoaders(name, loaders, { threaded = true } = {}) {
+  return [
+    {
+      loader: require.resolve('cache-loader'),
+      options: {
+        cacheDirectory: path.resolve(
+          paths.appNodeModules,
+          '.cache',
+          require(paths.appPackageJson).name,
+          name
+        ),
+      },
+    },
+    threaded
+      ? {
+          loader: require.resolve('thread-loader'),
+          options: {
+            workers: cpus().length * 2,
+            name: `${name}-pool`,
+          },
+        }
+      : null,
+    ...loaders,
+  ].filter(Boolean);
+}
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -134,24 +161,28 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: eslintFormatter,
-              eslintPath: require.resolve('eslint'),
-              // @remove-on-eject-begin
-              // TODO: consider separate config for production,
-              // e.g. to enable no-console and no-debugger only in production.
-              baseConfig: {
-                extends: [require.resolve('eslint-config-react-app')],
+        use: cacheExpensiveLoaders(
+          'eslint',
+          [
+            {
+              options: {
+                formatter: eslintFormatter,
+                eslintPath: require.resolve('eslint'),
+                // @remove-on-eject-begin
+                // TODO: consider separate config for production,
+                // e.g. to enable no-console and no-debugger only in production.
+                baseConfig: {
+                  extends: [require.resolve('eslint-config-react-app')],
+                },
+                ignore: false,
+                useEslintrc: false,
+                // @remove-on-eject-end
               },
-              ignore: false,
-              useEslintrc: false,
-              // @remove-on-eject-end
+              loader: require.resolve('eslint-loader'),
             },
-            loader: require.resolve('eslint-loader'),
-          },
-        ],
+          ],
+          { threaded: false }
+        ),
         include: paths.appSrc,
       },
       {
@@ -173,14 +204,18 @@ module.exports = {
           {
             test: /\.(js|jsx)$/,
             include: paths.appSrc,
-            loader: require.resolve('babel-loader'),
-            options: {
-              // @remove-on-eject-begin
-              babelrc: false,
-              presets: [require.resolve('babel-preset-react-app')],
-              // @remove-on-eject-end
-              compact: true,
-            },
+            use: cacheExpensiveLoaders('babel', [
+              {
+                loader: require.resolve('babel-loader'),
+                options: {
+                  // @remove-on-eject-begin
+                  babelrc: false,
+                  presets: [require.resolve('babel-preset-react-app')],
+                  // @remove-on-eject-end
+                  compact: true,
+                },
+              },
+            ]),
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
