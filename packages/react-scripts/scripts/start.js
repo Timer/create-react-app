@@ -48,13 +48,6 @@ const createDevServerConfig = require('../config/webpackDevServer.config');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
-// @remove-on-eject-begin
-// Require browsers to be specified before you eject
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-if (!checkBrowsers(paths.appPath)) {
-  process.exit(1);
-}
-// @remove-on-eject-end
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
@@ -65,9 +58,15 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
-// We attempt to use the default port but if it is busy, we offer the user to
-// run on a different port. `choosePort()` Promise resolves to the next free port.
-choosePort(HOST, DEFAULT_PORT)
+// We require that you explictly set browsers and do not fall back to
+// browserslist defaults.
+const { checkBrowsers } = require('react-dev-utils/browsersHelper');
+checkBrowsers(paths.appPath)
+  .then(() => {
+    // We attempt to use the default port but if it is busy, we offer the user to
+    // run on a different port. `choosePort()` Promise resolves to the next free port.
+    return choosePort(HOST, DEFAULT_PORT);
+  })
   .then(port => {
     if (port == null) {
       // We have not found a port.
