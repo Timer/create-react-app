@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const http = require('http');
+const jsdom = require('jsdom/lib/old-api.js');
 const path = require('path');
 
 let getMarkup;
