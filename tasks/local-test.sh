@@ -101,6 +101,7 @@ CMD
 
 docker run \
   --env CI=true \
+  --env CI_DIRTY=true \
   --env NPM_CONFIG_QUIET=true \
   --tty \
   --user node \

@@ -21,6 +21,9 @@ original_npm_registry_url=`npm get registry`
 original_yarn_registry_url=`yarn config get registry`
 
 function cleanup {
+  if [[ ! -z "${CI_DIRTY}" ]]; then
+    return 0
+  fi
   echo 'Cleaning up.'
   unset BROWSERSLIST
   ps -ef | grep 'react-scripts' | grep -v grep | awk '{print $2}' | xargs kill -9
