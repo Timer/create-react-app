@@ -72,12 +72,12 @@ git config --global user.name "Create React App"
 git config --global user.email "cra@email.com"
 git stash save -u
 git stash show -p > patch
-git diff 4b825dc642cb6eb9a060e54bf8d69288fbee4904 stash^3 >> patch
 git stash pop
 cd -
 mv /var/create-react-app/patch .
 git apply patch
 rm patch
+git commit -am "unstaged changes"
 CMD
 
 if [ ${git_branch} != ${current_git_branch} ]; then
