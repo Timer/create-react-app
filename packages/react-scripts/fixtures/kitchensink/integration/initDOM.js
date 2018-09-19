@@ -7,8 +7,9 @@
 
 const fs = require('fs');
 const http = require('http');
-const jsdom = require('jsdom/lib/old-api.js');
+const jsdom = require('jsdom');
 const path = require('path');
+const { expect } = require('chai');
 
 let getMarkup;
 export let resourceLoader;
@@ -49,7 +50,7 @@ if (process.env.E2E_FILE) {
   it.only('can run jsdom (at least one of "E2E_FILE" or "E2E_URL" environment variables must be provided)', () => {
     expect(
       new Error("This isn't the error you are looking for.")
-    ).toBeUndefined();
+    ).to.be.undefined();
   });
 }
 
@@ -61,7 +62,6 @@ export default feature =>
       created: (_, win) =>
         win.addEventListener('ReactFeatureDidMount', () => resolve(doc), true),
       deferClose: true,
-      pretendToBeVisual: true,
       pretendToBeVisual: true,
       resourceLoader,
       url: `${host}#${feature}`,

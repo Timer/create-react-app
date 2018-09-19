@@ -138,7 +138,7 @@ REACT_APP_SHELL_ENV_MESSAGE=fromtheshell \
   CI=true \
   NODE_PATH=src \
   NODE_ENV=test \
-  yarn test --no-cache --runInBand --testPathPattern=src
+  yarn test --no-cache --testPathPattern=src
 
 # Prepare "development" environment
 tmp_server_log=`mktemp`
@@ -148,13 +148,17 @@ PORT=3001 \
   nohup yarn start &>$tmp_server_log &
 grep -q 'You can now view' <(tail -f $tmp_server_log)
 
+# Before running Mocha, specify that it should use our preset
+# TODO: this is very hacky and we should find some other solution
+echo '{"presets":["react-app"]}' > .babelrc
+
 # Test "development" environment
 E2E_URL="http://localhost:3001" \
   REACT_APP_SHELL_ENV_MESSAGE=fromtheshell \
   CI=true NODE_PATH=src \
   NODE_ENV=development \
   BABEL_ENV=test \
-  node_modules/.bin/jest --no-cache --runInBand --config='jest.integration.config.js'
+  node_modules/.bin/mocha --timeout 30000 --compilers js:@babel/register --require @babel/polyfill integration/*.test.js
 # Test "production" environment
 E2E_FILE=./build/index.html \
   CI=true \
@@ -162,7 +166,11 @@ E2E_FILE=./build/index.html \
   NODE_ENV=production \
   BABEL_ENV=test \
   PUBLIC_URL=http://www.example.org/spa/ \
-  node_modules/.bin/jest --no-cache --runInBand --config='jest.integration.config.js'
+  node_modules/.bin/mocha --timeout 30000 --compilers js:@babel/register --require @babel/polyfill integration/*.test.js
+
+# Remove the config we just created for Mocha
+# TODO: this is very hacky and we should find some other solution
+rm .babelrc
 
 # Cleanup
 cleanup

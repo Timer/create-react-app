@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { expect } from 'chai';
 import initDOM, { resourceLoader } from './initDOM';
 import url from 'url';
 
@@ -86,7 +87,7 @@ describe('Integration', () => {
       const children = doc.getElementById('graphql-inclusion').children;
 
       // .graphql
-      expect(children[0].textContent.replace(/\s/g, '')).toBe(
+      expect(children[0].textContent.replace(/\s/g, '')).to.equal(
         '{"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"test"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"test"},"value":{"kind":"StringValue","value":"test","block":false}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"test"},"arguments":[],"directives":[]}]}}]}}],"loc":{"start":0,"end":40,"source":{"body":"{\\ntest(test:\\"test\\"){\\ntest\\n}\\n}\\n","name":"GraphQLrequest","locationOffset":{"line":1,"column":1}}}}'
       );
       doc.defaultView.close();
@@ -95,7 +96,7 @@ describe('Integration', () => {
     it('image inclusion', async () => {
       const doc = await initDOM('image-inclusion');
 
-      expect(doc.getElementById('feature-image-inclusion').src).toMatch(
+      expect(doc.getElementById('feature-image-inclusion').src).to.match(
         /^data:image\/jpeg;base64.+==$/
       );
       doc.defaultView.close();
@@ -104,7 +105,7 @@ describe('Integration', () => {
     it('no ext inclusion', async () => {
       const doc = await initDOM('no-ext-inclusion');
 
-      expect(doc.getElementById('feature-no-ext-inclusion').href).toMatch(
+      expect(doc.getElementById('feature-no-ext-inclusion').href).to.match(
         /\/static\/media\/aFileWithoutExt\.[a-f0-9]{8}\.bin$/
       );
       doc.defaultView.close();
@@ -113,7 +114,7 @@ describe('Integration', () => {
     it('json inclusion', async () => {
       const doc = await initDOM('json-inclusion');
 
-      expect(doc.getElementById('feature-json-inclusion').textContent).toBe(
+      expect(doc.getElementById('feature-json-inclusion').textContent).to.equal(
         'This is an abstract.'
       );
       doc.defaultView.close();
@@ -122,7 +123,7 @@ describe('Integration', () => {
     it('linked modules', async () => {
       const doc = await initDOM('linked-modules');
 
-      expect(doc.getElementById('feature-linked-modules').textContent).toBe(
+      expect(doc.getElementById('feature-linked-modules').textContent).to.equal(
         '2.0.0'
       );
       doc.defaultView.close();
@@ -130,7 +131,7 @@ describe('Integration', () => {
 
     it('svg inclusion', async () => {
       const doc = await initDOM('svg-inclusion');
-      expect(doc.getElementById('feature-svg-inclusion').src).toMatch(
+      expect(doc.getElementById('feature-svg-inclusion').src).to.match(
         /\/static\/media\/logo\..+\.svg$/
       );
       doc.defaultView.close();
@@ -139,7 +140,9 @@ describe('Integration', () => {
     it('svg component', async () => {
       const doc = await initDOM('svg-component');
 
-      expect(doc.getElementById('feature-svg-component').textContent).toBe('');
+      expect(doc.getElementById('feature-svg-component').textContent).to.equal(
+        ''
+      );
       doc.defaultView.close();
     });
 
